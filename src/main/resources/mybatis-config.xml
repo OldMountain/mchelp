@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="mcdbconfig.properties"></properties>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="offsetAsPageNum" value="false"/>
+            <property name="rowBoundsWithCount" value="false"/>
+            <property name="pageSizeZero" value="true"/>
+            <property name="reasonable" value="false"/>
+            <property name="supportMethodsArguments" value="false"/>
+            <property name="returnPageInfo" value="none"/>
+        </plugin>
+    </plugins>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <!-- 配置数据库连接信息 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${mc.driverClassName}" />
+                <property name="url" value="${mc.url}" />
+                <property name="username" value="${mc.username}" />
+                <property name="password" value="${mc.password}" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mapper/mchelp/AuthMeMapper.xml" />
+    </mappers>
+</configuration>

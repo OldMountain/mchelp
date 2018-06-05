@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nxd.ftt.mchelper.mapper.AuthMeMapper">
+    <resultMap id="BaseResultMap" type="com.nxd.ftt.mchelper.entity.AuthMe">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="realname" property="realname"/>
+        <result column="password" property="password"/>
+        <result column="ip" property="ip"/>
+        <result column="lastlogin" property="lastlogin"/>
+        <result column="x" property="x"/>
+        <result column="y" property="y"/>
+        <result column="z" property="z"/>
+        <result column="world" property="world"/>
+        <result column="email" property="email"/>
+        <result column="isLogged" property="islogged"/>
+        <result column="hasSession" property="hassession"/>
+        <result column="regdate" property="regdate"/>
+        <result column="regip" property="regip"/>
+        <result column="yaw" property="yaw"/>
+        <result column="pitch" property="pitch"/>
+    </resultMap>
+    <select id="select" parameterType="com.nxd.ftt.mchelper.entity.AuthMe" resultMap="BaseResultMap">
+        select
+        <trim suffixOverrides=",">
+            id,
+            username,
+            realname,
+            password,
+            ip,
+            lastlogin,
+            x,
+            y,
+            z,
+            world,
+            email,
+            isLogged,
+            hasSession,
+            regdate,
+            regip,
+            yaw,
+            pitch,
+        </trim>
+        from authme
+        <where>
+            <if test="id != null and id !=''">
+                and id = #{id}
+            </if>
+            <if test="username != null and username !=''">
+                and username = #{username}
+            </if>
+            <if test="realname != null and realname !=''">
+                and realname = #{realname}
+            </if>
+            <if test="password != null and password !=''">
+                and password = #{password}
+            </if>
+            <if test="ip != null and ip !=''">
+                and ip = #{ip}
+            </if>
+            <if test="lastlogin != null and lastlogin !=''">
+                and lastlogin = #{lastlogin}
+            </if>
+            <if test="x != null and x !=''">
+                and x = #{x}
+            </if>
+            <if test="y != null and y !=''">
+                and y = #{y}
+            </if>
+            <if test="z != null and z !=''">
+                and z = #{z}
+            </if>
+            <if test="world != null and world !=''">
+                and world = #{world}
+            </if>
+            <if test="email != null and email !=''">
+                and email = #{email}
+            </if>
+            <if test="islogged != null and islogged !=''">
+                and isLogged = #{islogged}
+            </if>
+            <if test="hassession != null and hassession !=''">
+                and hasSession = #{hassession}
+            </if>
+            <if test="regdate != null and regdate !=''">
+                and regdate = #{regdate}
+            </if>
+            <if test="regip != null and regip !=''">
+                and regip = #{regip}
+            </if>
+            <if test="yaw != null and yaw !=''">
+                and yaw = #{yaw}
+            </if>
+            <if test="pitch != null and pitch !=''">
+                and pitch = #{pitch}
+            </if>
+        </where>
+    </select>
+    <select id="selectById" parameterType="com.nxd.ftt.mchelper.entity.AuthMe" resultMap="BaseResultMap">
+        select
+        <trim suffixOverrides=",">
+            id,
+            username,
+            realname,
+            password,
+            ip,
+            lastlogin,
+            x,
+            y,
+            z,
+            world,
+            email,
+            isLogged,
+            hasSession,
+            regdate,
+            regip,
+            yaw,
+            pitch,
+        </trim>
+        from authme
+        where id = #{id}
+    </select>
+    <delete id="batchDelete" parameterType="java.lang.String">
+        delete from authme
+        where id in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+    </delete>
+    <insert id="insert" parameterType="com.nxd.ftt.mchelper.entity.AuthMe">
+        insert into authme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id !=''">
+                id,
+            </if>
+            <if test="username != null and username !=''">
+                username,
+            </if>
+            <if test="realname != null and realname !=''">
+                realname,
+            </if>
+            <if test="password != null and password !=''">
+                password,
+            </if>
+            <if test="ip != null and ip !=''">
+                ip,
+            </if>
+            <if test="lastlogin != null and lastlogin !=''">
+                lastlogin,
+            </if>
+            <if test="x != null and x !=''">
+                x,
+            </if>
+            <if test="y != null and y !=''">
+                y,
+            </if>
+            <if test="z != null and z !=''">
+                z,
+            </if>
+            <if test="world != null and world !=''">
+                world,
+            </if>
+            <if test="email != null and email !=''">
+                email,
+            </if>
+            <if test="islogged != null and islogged !=''">
+                isLogged,
+            </if>
+            <if test="hassession != null and hassession !=''">
+                hasSession,
+            </if>
+            <if test="regdate != null and regdate !=''">
+                regdate,
+            </if>
+            <if test="regip != null and regip !=''">
+                regip,
+            </if>
+            <if test="yaw != null and yaw !=''">
+                yaw,
+            </if>
+            <if test="pitch != null and pitch !=''">
+                pitch,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id !=''">
+                #{id},
+            </if>
+            <if test="username != null and username !=''">
+                #{username},
+            </if>
+            <if test="realname != null and realname !=''">
+                #{realname},
+            </if>
+            <if test="password != null and password !=''">
+                #{password},
+            </if>
+            <if test="ip != null and ip !=''">
+                #{ip},
+            </if>
+            <if test="lastlogin != null and lastlogin !=''">
+                #{lastlogin},
+            </if>
+            <if test="x != null and x !=''">
+                #{x},
+            </if>
+            <if test="y != null and y !=''">
+                #{y},
+            </if>
+            <if test="z != null and z !=''">
+                #{z},
+            </if>
+            <if test="world != null and world !=''">
+                #{world},
+            </if>
+            <if test="email != null and email !=''">
+                #{email},
+            </if>
+            <if test="islogged != null and islogged !=''">
+                #{islogged},
+            </if>
+            <if test="hassession != null and hassession !=''">
+                #{hassession},
+            </if>
+            <if test="regdate != null and regdate !=''">
+                #{regdate},
+            </if>
+            <if test="regip != null and regip !=''">
+                #{regip},
+            </if>
+            <if test="yaw != null and yaw !=''">
+                #{yaw},
+            </if>
+            <if test="pitch != null and pitch !=''">
+                #{pitch},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.nxd.ftt.mchelper.entity.AuthMe">
+        update authme
+        set
+        <trim suffixOverrides=",">
+            <if test="id != null and id !=''">
+                id = #{id},
+            </if>
+            <if test="username != null and username !=''">
+                username = #{username},
+            </if>
+            <if test="realname != null and realname !=''">
+                realname = #{realname},
+            </if>
+            <if test="password != null and password !=''">
+                password = #{password},
+            </if>
+            <if test="ip != null and ip !=''">
+                ip = #{ip},
+            </if>
+            <if test="lastlogin != null and lastlogin !=''">
+                lastlogin = #{lastlogin},
+            </if>
+            <if test="x != null and x !=''">
+                x = #{x},
+            </if>
+            <if test="y != null and y !=''">
+                y = #{y},
+            </if>
+            <if test="z != null and z !=''">
+                z = #{z},
+            </if>
+            <if test="world != null and world !=''">
+                world = #{world},
+            </if>
+            <if test="email != null and email !=''">
+                email = #{email},
+            </if>
+            <if test="islogged != null and islogged !=''">
+                isLogged = #{islogged},
+            </if>
+            <if test="hassession != null and hassession !=''">
+                hasSession = #{hassession},
+            </if>
+            <if test="regdate != null and regdate !=''">
+                regdate = #{regdate},
+            </if>
+            <if test="regip != null and regip !=''">
+                regip = #{regip},
+            </if>
+            <if test="yaw != null and yaw !=''">
+                yaw = #{yaw},
+            </if>
+            <if test="pitch != null and pitch !=''">
+                pitch = #{pitch},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="com.nxd.ftt.mchelper.entity.AuthMe">
+        delete from authme
+        where id = #{id}
+    </delete>
+</mapper>
