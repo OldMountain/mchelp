@@ -6,6 +6,7 @@
 
   <groupId>com.nxd.ftt</groupId>
   <artifactId>mchelp</artifactId>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
   <name>mchelp</name>
