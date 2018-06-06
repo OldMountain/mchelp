@@ -1,9 +1,10 @@
 package com.nxd.ftt.mchelper.util;
 
-import com.github.pagehelper.PageHelper;
 import com.nxd.ftt.mchelper.entity.AuthMe;
 import com.nxd.ftt.mchelper.mapper.AuthMeMapper;
+import com.nxd.ftt.mchelper.util.authme.HashUtil;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -16,11 +17,31 @@ public class MCHelper {
 
     /**
      * 获取登录信息
+     *
      * @return
      */
-    public static List<AuthMe> getAuthMe(){
+    public static List<AuthMe> listAuthMeInfo() throws SQLException {
         AuthMeMapper authMeMapper = MapperUtil.getMapper(AuthMeMapper.class);
         List<AuthMe> list = authMeMapper.select(new AuthMe());
         return list;
     }
+
+    /**
+     * 登录
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws SQLException
+     */
+    public static AuthMe login(String username, String password) throws SQLException {
+        AuthMeMapper authMeMapper = MapperUtil.getMapper(AuthMeMapper.class);
+        String pass = authMeMapper.selectPass(username.toLowerCase());
+        String newPass = HashUtil.computeSHA256Hash(password, HashUtil.getSalt(pass));
+        if (newPass != null && newPass.equals(pass)) {
+            return authMeMapper.login(new AuthMe(username.toLowerCase(), password));
+        }
+        throw new NullPointerException("用户不存在");
+    }
+
 }

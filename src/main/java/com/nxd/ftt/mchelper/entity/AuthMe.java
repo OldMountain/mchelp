@@ -44,8 +44,15 @@ public class AuthMe {
 
     private float pitch;
 
+    public AuthMe() {
+    }
 
-    /** 
+    public AuthMe(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    /**
      *
      * @return id
      */

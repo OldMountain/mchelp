@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!--加载配置文件-->
     <properties resource="mcdbconfig.properties"></properties>
+    <!--插件-->
     <plugins>
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
             <property name="offsetAsPageNum" value="false"/>
@@ -25,6 +27,7 @@
         </environment>
     </environments>
     <mappers>
+        <!--注册xml文件-->
         <mapper resource="mapper/mchelp/AuthMeMapper.xml" />
     </mappers>
 </configuration>

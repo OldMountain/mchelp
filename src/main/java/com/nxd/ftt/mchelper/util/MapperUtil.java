@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MapperUtil {
 
-    public static <T> T getMapper(Class<T> c){
+    protected static <T> T getMapper(Class<T> c){
         return SqlSessionUtil.getInstance().getMapper(c);
     }
 

@@ -120,6 +120,12 @@
         from authme
         where id = #{id}
     </select>
+    <select id="login" parameterType="com.nxd.ftt.mchelper.entity.AuthMe" resultMap="BaseResultMap">
+        select * from authme where username = #{username} and password = #{password}
+    </select>
+    <select id="selectPass" parameterType="String" resultType="String">
+        select password from authme where username = #{username}
+    </select>
     <delete id="batchDelete" parameterType="java.lang.String">
         delete from authme
         where id in
