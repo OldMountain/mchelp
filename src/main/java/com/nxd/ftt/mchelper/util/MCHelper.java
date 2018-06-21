@@ -47,12 +47,11 @@ public class MCHelper {
         throw new NullPointerException("用户不存在");
     }
 
-    public static void main(String[] args) {
+    public static ServerInfo getServerInfo() {
         InetSocketAddress inetSocketAddress = new InetSocketAddress("mc12.icraft.cc",42460);
         ServerUtil serverUtil = new ServerUtil();
         serverUtil.setAddress(inetSocketAddress);
-        ServerInfo res = serverUtil.fetchData();
-        System.out.println(res.toString());
+        return serverUtil.fetchData();
     }
 
 }
