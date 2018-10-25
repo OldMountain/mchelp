@@ -40,6 +40,7 @@ public class MCHelper {
     public static AuthMe login(String username, String password) throws SQLException {
         AuthMeMapper authMeMapper = MapperUtil.getMapper(AuthMeMapper.class);
         String pass = authMeMapper.selectPass(username.toLowerCase());
+        MapperUtil.close();
         String newPass = HashUtil.computeSHA256Hash(password, HashUtil.getSalt(pass));
         if (newPass != null && newPass.equals(pass)) {
             return authMeMapper.login(new AuthMe(username.toLowerCase(), password));

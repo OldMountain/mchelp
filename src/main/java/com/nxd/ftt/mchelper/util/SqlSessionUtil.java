@@ -16,28 +16,40 @@ import java.io.InputStream;
  */
 public class SqlSessionUtil {
 
+    private static SqlSessionFactory sqlSessionFactory;
+    private static SqlSession sqlSession;
+
     private SqlSessionUtil() {
     }
 
     public static SqlSession getInstance() {
         try {
-            return SqlSessionUtilSingle.getSqlSession();
+            if (sqlSession == null) {
+                sqlSession = SqlSessionUtilSingle().openSession();
+            }
+            return sqlSession;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private static class SqlSessionUtilSingle {
-        private static SqlSession sqlSession;
-
-        public static SqlSession getSqlSession() throws IOException {
-            String resource = "mybatis-config.xml";
-            InputStream inputStream = Resources.getResourceAsStream(resource);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-            sqlSession = sqlSessionFactory.openSession();
-            return sqlSession;
+    private static SqlSessionFactory SqlSessionUtilSingle() throws IOException {
+        if (sqlSessionFactory == null) {
+            synchronized (SqlSessionUtil.class) {
+                if (sqlSessionFactory == null) {
+                    String resource = "mybatis-config.xml";
+                    InputStream inputStream = Resources.getResourceAsStream(resource);
+                    sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+                }
+            }
         }
+        return sqlSessionFactory;
+    }
 
+    public static void close() {
+        if (sqlSession != null) {
+            sqlSession.close();
+        }
     }
 }

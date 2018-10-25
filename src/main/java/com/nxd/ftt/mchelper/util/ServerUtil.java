@@ -1,6 +1,7 @@
 package com.nxd.ftt.mchelper.util;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.nxd.ftt.mchelper.entity.server.ServerInfo;
 
 import java.io.*;
@@ -22,11 +23,11 @@ public class ServerUtil {
     private int timeout = 70000;
     private Gson gson = new Gson();
 
-    public void setAddress(InetSocketAddress host) {
+    protected void setAddress(InetSocketAddress host) {
         this.host = host;
     }
 
-    public InetSocketAddress getAddress() {
+    private InetSocketAddress getAddress() {
         return this.host;
     }
 
@@ -38,7 +39,7 @@ public class ServerUtil {
         return this.timeout;
     }
 
-    public int readVarInt(DataInputStream in) throws IOException {
+    private int readVarInt(DataInputStream in) throws IOException {
         int i = 0;
         int j = 0;
         while (true) {
@@ -54,7 +55,7 @@ public class ServerUtil {
         return i;
     }
 
-    public void writeVarInt(DataOutputStream out, int paramInt) throws IOException {
+    private void writeVarInt(DataOutputStream out, int paramInt) throws IOException {
         while (true) {
             if ((paramInt & 0xFFFFFF80) == 0) {
                 out.writeByte(paramInt);
@@ -66,7 +67,7 @@ public class ServerUtil {
         }
     }
 
-    public ServerInfo fetchData() {
+    protected ServerInfo fetchData() {
 
         Socket socket = new Socket();
         OutputStream outputStream = null;
@@ -75,6 +76,7 @@ public class ServerUtil {
         InputStreamReader inputStreamReader = null;
 
         ServerInfo response = null;
+        ByteArrayOutputStream out = null;
         try {
             socket.setSoTimeout(this.timeout);
             socket.connect(host, timeout);
@@ -109,36 +111,45 @@ public class ServerUtil {
             dataOutputStream.writeByte(0x01);
             //packet id for ping
             dataOutputStream.writeByte(0x00);
-            DataInputStream dataInputStream = new DataInputStream(inputStream);
-            //size of packet
-            int size = readVarInt(dataInputStream);
-            //packet id
-            int id = readVarInt(dataInputStream);
-
-            if (id == -1) {
-                throw new IOException("Premature end of stream.");
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            out = new ByteArrayOutputStream();
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            while ((len = bufferedInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, len);
             }
-
-            //we want a status response
-            if (id != 0x00) {
-                throw new IOException("Invalid packetID");
-            }
-            //length of json string
-            int length = readVarInt(dataInputStream);
-
-            if (length == -1) {
-                throw new IOException("Premature end of stream.");
-            }
-
-            if (length == 0) {
-                throw new IOException("Invalid string length.");
-            }
-
-            byte[] in = new byte[length];
-            //read json string
-            dataInputStream.read(in);
-            String json = new String(in);
+//            DataInputStream dataInputStream = new DataInputStream(inputStream);
+//            //size of packet
+//            int size = readVarInt(dataInputStream);
+//            //packet id
+//            int id = readVarInt(dataInputStream);
+//
+//            if (id == -1) {
+//                throw new IOException("Premature end of stream.");
+//            }
+//
+//            //we want a status response
+//            if (id != 0x00) {
+//                throw new IOException("Invalid packetID");
+//            }
+//            //length of json string
+//            int length = readVarInt(dataInputStream);
+//
+//            if (length == -1) {
+//                throw new IOException("Premature end of stream.");
+//            }
+//
+//            if (length == 0) {
+//                throw new IOException("Invalid string length.");
+//            }
+//
+//            byte[] in = new byte[length];
+//            //read json string
+//            dataInputStream.read(in);
+            String json = new String(out.toByteArray(), "UTF-8");
+            out.flush();
             json = pattern.matcher(json).replaceAll("");
+            json = json.substring(json.indexOf("{"));
 
 //        long now = System.currentTimeMillis();
 //        dataOutputStream.writeByte(0x09); //size of packet
@@ -156,7 +167,11 @@ public class ServerUtil {
 //        }
 //        long pingtime = dataInputStream.readLong(); //read response
 
-            response = gson.fromJson(json, ServerInfo.class);
+            try {
+                response = gson.fromJson(json, ServerInfo.class);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
 //        response.setTime((int) (now - pingtime));
         } catch (SocketException e) {
             e.printStackTrace();
@@ -168,6 +183,7 @@ public class ServerUtil {
                 outputStream.close();
                 inputStreamReader.close();
                 inputStream.close();
+                out.close();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();

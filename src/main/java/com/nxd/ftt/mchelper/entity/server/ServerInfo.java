@@ -11,16 +11,16 @@ import com.google.gson.Gson;
 public class ServerInfo {
 
 
-    private Description description;
+    private String description;
     private Players players;
     private Version version;
     private String favicon;
 
-    public Description getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Description description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

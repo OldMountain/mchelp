@@ -26,9 +26,8 @@ public class MapperUtil {
         return SqlSessionUtil.getInstance().getMapper(c);
     }
 
-    public static void main(String[] args) {
-        AuthMeMapper s = MapperUtil.getMapper(AuthMeMapper.class);
-        List<AuthMe> a = s.select(new AuthMe());
-        System.out.println(a.size());
+
+    public static void close() {
+        SqlSessionUtil.close();
     }
 }
