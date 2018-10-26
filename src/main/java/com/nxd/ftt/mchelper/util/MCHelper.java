@@ -55,4 +55,12 @@ public class MCHelper {
         return serverUtil.fetchData();
     }
 
+    public static void main(String[] args) {
+        try {
+            login("OldMountain","zxcvbnm");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
