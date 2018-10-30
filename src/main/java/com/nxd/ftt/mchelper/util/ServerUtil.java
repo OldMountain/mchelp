@@ -2,6 +2,7 @@ package com.nxd.ftt.mchelper.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.nxd.ftt.mchelper.entity.server.McServerInfo;
 import com.nxd.ftt.mchelper.entity.server.ServerInfo;
 
 import java.io.*;
@@ -67,7 +68,7 @@ public class ServerUtil {
         }
     }
 
-    protected ServerInfo fetchData() {
+    protected McServerInfo fetchData() {
 
         Socket socket = new Socket();
         OutputStream outputStream = null;
@@ -75,8 +76,7 @@ public class ServerUtil {
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
 
-        ServerInfo response = null;
-        ByteArrayOutputStream out = null;
+        McServerInfo response = null;
         try {
             socket.setSoTimeout(this.timeout);
             socket.connect(host, timeout);
@@ -112,11 +112,15 @@ public class ServerUtil {
             //packet id for ping
             dataOutputStream.writeByte(0x00);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            out = new ByteArrayOutputStream();
-            byte[] bytes = new byte[1024];
+            byte[] bytes = new byte[2048];
             int len = 0;
+            StringBuilder builder = new StringBuilder();
             while ((len = bufferedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, len);
+                String str = new String(bytes,0,len);
+                builder.append(str);
+                if (len < bytes.length || str.endsWith("}]}}")) {
+                    break;
+                }
             }
 //            DataInputStream dataInputStream = new DataInputStream(inputStream);
 //            //size of packet
@@ -146,9 +150,7 @@ public class ServerUtil {
 //            byte[] in = new byte[length];
 //            //read json string
 //            dataInputStream.read(in);
-            String json = new String(out.toByteArray(), "UTF-8");
-            out.flush();
-            json = pattern.matcher(json).replaceAll("");
+            String json = pattern.matcher(builder.toString()).replaceAll("");
             json = json.substring(json.indexOf("{"));
 
 //        long now = System.currentTimeMillis();
@@ -168,7 +170,7 @@ public class ServerUtil {
 //        long pingtime = dataInputStream.readLong(); //read response
 
             try {
-                response = gson.fromJson(json, ServerInfo.class);
+                response = gson.fromJson(json, McServerInfo.class);
             } catch (JsonSyntaxException e) {
                 e.printStackTrace();
             }
@@ -183,7 +185,6 @@ public class ServerUtil {
                 outputStream.close();
                 inputStreamReader.close();
                 inputStream.close();
-                out.close();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();

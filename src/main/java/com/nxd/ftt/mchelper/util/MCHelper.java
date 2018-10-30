@@ -1,11 +1,10 @@
 package com.nxd.ftt.mchelper.util;
 
 import com.nxd.ftt.mchelper.entity.AuthMe;
-import com.nxd.ftt.mchelper.entity.server.ServerInfo;
+import com.nxd.ftt.mchelper.entity.server.McServerInfo;
 import com.nxd.ftt.mchelper.mapper.AuthMeMapper;
 import com.nxd.ftt.mchelper.util.authme.HashUtil;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.SQLException;
 import java.util.List;
@@ -48,19 +47,16 @@ public class MCHelper {
         throw new NullPointerException("用户不存在");
     }
 
-    public static ServerInfo getServerInfo() {
-        InetSocketAddress inetSocketAddress = new InetSocketAddress("mc12.icraft.cc",42460);
+    public static McServerInfo getServerInfo() {
+        InetSocketAddress inetSocketAddress = new InetSocketAddress("mc12.icraft.cc", 42460);
         ServerUtil serverUtil = new ServerUtil();
         serverUtil.setAddress(inetSocketAddress);
         return serverUtil.fetchData();
     }
 
     public static void main(String[] args) {
-        try {
-            login("OldMountain","zxcvbnm");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        McServerInfo serverInfo = getServerInfo();
+        System.out.println(serverInfo.getDescription());
     }
 
 }
