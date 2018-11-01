@@ -49,6 +49,7 @@ public class MCHelper {
 
     public static McServerInfo getServerInfo() {
         InetSocketAddress inetSocketAddress = new InetSocketAddress("mc12.icraft.cc", 42460);
+//        InetSocketAddress inetSocketAddress = new InetSocketAddress("r.mcstory.cc", 30331);
         ServerUtil serverUtil = new ServerUtil();
         serverUtil.setAddress(inetSocketAddress);
         return serverUtil.fetchData();
