@@ -116,9 +116,9 @@ public class ServerUtil {
             int len = 0;
             StringBuilder builder = new StringBuilder();
             while ((len = bufferedInputStream.read(bytes)) != -1) {
-                String str = new String(bytes,0,len);
+                String str = new String(bytes,0,len,"UTF-8");
                 builder.append(str);
-                if (len < bytes.length || str.endsWith("}]}}")) {
+                if (str.endsWith("}]}}")) {
                     break;
                 }
             }
