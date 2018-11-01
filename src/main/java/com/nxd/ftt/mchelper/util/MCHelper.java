@@ -47,8 +47,9 @@ public class MCHelper {
         throw new NullPointerException("用户不存在");
     }
 
-    public static McServerInfo getServerInfo() {
-        InetSocketAddress inetSocketAddress = new InetSocketAddress("mc12.icraft.cc", 42460);
+    public static McServerInfo getServerInfo(String ip,int port) {
+//        InetSocketAddress inetSocketAddress = new InetSocketAddress("mc12.icraft.cc", 42460);
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(ip, port);
 //        InetSocketAddress inetSocketAddress = new InetSocketAddress("r.mcstory.cc", 30331);
         ServerUtil serverUtil = new ServerUtil();
         serverUtil.setAddress(inetSocketAddress);
@@ -56,7 +57,7 @@ public class MCHelper {
     }
 
     public static void main(String[] args) {
-        McServerInfo serverInfo = getServerInfo();
+        McServerInfo serverInfo = getServerInfo("mc12.icraft.cc", 42460);
         System.out.println(serverInfo.getDescription());
     }
 
